@@ -45,4 +45,4 @@ Zip your solution, upload it somewhere, and send us a link to the zipped file.
 2. Dockerize the API
 
 <br>
-<i><a name="footnote1"><sup>1</sup></a> Joe says that api.population.io is down, so try https://dyicn1e62j3n1.cloudfront.net as the host instead.<i>
+<i><a name="footnote1"><sup>1</sup></a> Joe says that api.population.io is down, so try https://d6wn6bmjj722w.cloudfront.net as the host instead.<i>
