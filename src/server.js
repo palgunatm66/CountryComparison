@@ -4,6 +4,7 @@ const config = require('./config');
 const restify = require('restify');
 const plugins = require('restify-plugins');
 const argv = require('yargs').argv;
+require('dotenv').config();
 
 const logger = require('./lib/logger')();
 
