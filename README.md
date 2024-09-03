@@ -60,5 +60,70 @@ Zip your solution, upload it somewhere, and send us a link to the zipped file.
 
 2. Dockerize the API
 
+
+## Country Comparison API
+
+The Country Comparison API provides endpoints to retrieve and compare population statistics of various countries using data from a third-party provider. This API is built using Node.js and Restify.
+
+### Features
+
+- Retrieve a list of country names.
+
+- Compare population data for a specified set of countries.
+
+- Optional sorting of population data based on size.
+
+
+### How to Run
+
+You can run the Country Comparison API using Docker. Follow the steps below to get started:
+
+1. **Pull the Docker Image:**
+   docker pull palgunatm66/population-comparision:1.0
+
+2. **Run the Docker Container:**
+   docker run -p 3000:3000 palgunatm66/population-comparision:1.0
+
+
+### Endpoints
+
+- **Get List of Countries:**
+
+  - **URL:** `/api/v1/countries`
+
+  - **Method:** `GET`
+
+  - **Description:** Returns an array of country names.
+
+- **Get Population Comparison:**
+
+  - **URL:** `/api/v1/population-comparison/:countries/:sortOrder?`
+
+  - **Method:** `GET`
+
+  - **Description:** Returns population data for the specified countries. Optionally, the data can be sorted in ascending (`asc`) or descending (`desc`) order.
+
+### Example Usage
+
+- **Get List of Countries:**
+
+  ```sh
+  curl -i http://localhost:3000/api/v1/countries
+  ```
+
+- **Get Population Comparison:**
+
+  ```sh
+  curl -i http://localhost:3000/api/v1/population-comparison/Brazil,Argentina/desc
+  ```
+
+### Notes
+
+- Ensure your `NODE_ENV` is set to `production` when running the Docker container.
+
+- The API uses data from `https://d6wn6bmjj722w.population.io`.
+
+For more details, refer to the [README](https://github.com/KaplanTestPrep/country-comparison-api/blob/main/README.md) on GitHub.
+
 <br>
 <i><a name="footnote1"><sup>1</sup></a> Joe says that api.population.io is down, so try https://d6wn6bmjj722w.population.io/ as the host instead.<i>
