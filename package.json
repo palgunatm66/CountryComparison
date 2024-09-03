@@ -6,10 +6,10 @@
   "private": true,
   "scripts": {
     "start": "nodemon src/server.js",
-    "test": "cross-env NODE_ENV=test mocha --reporter spec --ui bdd 'test/unit/**/*-test.js' --exit",
-    "coverage": "nyc --reporter=lcov --reporter=text --reporter=cobertura npm test",
-    "lint": "./node_modules/.bin/eslint .",
-    "apidoc": "./node_modules/.bin/apidoc-swagger -i src/ -o doc/ && ./node_modules/.bin/apidoc -i src/ -o doc/",
+    "test": "cross-env NODE_ENV=test mocha --reporter spec --ui bdd 'test/unit/**/*.js' --exit",
+    "coverage": "nyc --reporter=lcov --reporter=text --reporter=cobertura mocha --reporter spec --ui bdd 'test/unit/**/*.js' --exit",
+    "lint": "npx eslint .",
+    "apidoc": "npx apidoc-swagger -i src/ -o doc/ && npx apidoc -i src/ -o doc/",
     "dev": "nodemon src/server.js | bunyan --output short --color"
   },
   "repository": {
@@ -25,25 +25,28 @@
     "axios": "^1.7.7",
     "bunyan": "^1.8.5",
     "co": "^4.6.0",
+    "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "everyconfig": "^1.0.2",
     "fs-promise": "^1.0.0",
+    "redis": "^4.7.0",
     "restify": "^11.1.0",
     "restify-errors": "^7.0.0",
     "restify-plugins": "^1.6.0",
     "sinon": "^18.0.0",
+    "util.promisify": "^1.1.2",
     "yargs": "^6.5.0"
   },
   "devDependencies": {
-    "apidoc": "^0.17.7",
-    "apidoc-swagger": "^0.3.0",
+    "apidoc": "^1.2.0",
+    "apidoc-swagger": "^0.3.2",
     "chai": "^3.5.0",
     "cross-env": "^7.0.3",
     "eslint": "^3.11.1",
     "eslint-config-airbnb": "^13.0.0",
-    "mocha": "^6.0.2",
+    "mocha": "^10.7.3",
     "nodemon": "^1.18.10",
-    "nyc": "^13.3.0",
+    "nyc": "^17.0.0",
     "supertest": "^3.4.2"
   },
   "apidoc": {

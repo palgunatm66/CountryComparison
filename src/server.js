@@ -4,6 +4,7 @@ const config = require('./config');
 const restify = require('restify');
 const plugins = require('restify-plugins');
 const argv = require('yargs').argv;
+const cors = require('cors');
 require('dotenv').config();
 
 const logger = require('./lib/logger')();
@@ -16,6 +17,13 @@ let app = restify.createServer({
   name: pjson.name,
   version: pjson.version,
   log: logger
+});
+
+
+app.use(cors());
+app.opts('*', cors(), (req, res, next) => {
+  res.send(200);
+  next();
 });
 
 app.acceptable = config.accept;
@@ -48,5 +56,6 @@ if (process.env.NODE_ENV !== 'test') {
     process.exit(1);
   });
 }
+
 // Expose
 module.exports = app;

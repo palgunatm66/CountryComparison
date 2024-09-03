@@ -14,7 +14,7 @@ exports.getCountries = async function getCountries(req, res) {
 
 exports.getPopulationComparison = async function getPopulationComparison(req, res) {
   try {
-    const { countries, sortOrder } = req.query;
+    const { countries, sortOrder } = req.params;
     const date = new Date().toISOString().split('T')[0]; // Get current date in YYYY-MM-DD format
 
     if (!countries) {
