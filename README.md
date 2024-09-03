@@ -11,11 +11,16 @@ Our current stack is primarily built in Node.js, Golang, and .NET.  Since this s
 ### Setup
 
 1. Download the repo
-2. Run `npm install` to install dependencies
-3. Run `npm test` to run unit tests
-4. Set your NODE_ENV to `dev`
-5. Run `npm start` to start the server
-6. Alternatively, you can use Docker to run the application:
+2. Ensure you are using Node.js version 20 or higher for local runs. You can check your Node.js version with:
+   ```sh
+   node -v
+   ```
+   If you need to upgrade, you can download the latest version from [nodejs.org](https://nodejs.org/).
+3. Run `npm install` to install dependencies
+4. Run `npm test` to run unit tests
+5. Set your NODE_ENV to `dev`
+6. Run `npm start` to start the server
+7. Alternatively, you can use Docker to run the application:
    - Pull the Docker image: `docker pull palgunatm66/population-comparision:1.0`
    - Run the Docker container: `docker run -p 3000:3000 palgunatm66/population-comparision:1.0`
 
@@ -120,7 +125,6 @@ You can run the Country Comparison API using Docker. Follow the steps below to g
 ### Notes
 
 - Ensure your `NODE_ENV` is set to `production` when running the Docker container.
-
 - The API uses data from `https://d6wn6bmjj722w.population.io`.
 
 For more details, refer to the [README](https://github.com/KaplanTestPrep/country-comparison-api/blob/main/README.md) on GitHub.
