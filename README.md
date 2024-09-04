@@ -43,38 +43,29 @@ Zip your solution, upload it somewhere, and send us a link to the zipped file.
 
 ### Bonus
 1. Some scenarios to consider (leave your thoughts inline in your code or edit the README):
-  * How efficient is your code?  What are some ways that you could improve performance?
-    * The current codebase is reasonably efficient but has room for improvement. The `getPopulationComparison` function fetches population data for each country sequentially, which can be slow if the list of countries is long. Additionally, there is no caching mechanism in place, which means repeated requests for the same data will always hit the external API, leading to potential performance bottlenecks.
+   * How efficient is your code?  What are some ways that you could improve performance?
+     * The current codebase is reasonably efficient but has room for improvement. The `getPopulationComparison` function fetches population data for each country sequentially, which can be slow if the list of countries is long. Additionally, there is no caching mechanism in place, which means repeated requests for the same data will always hit the external API, leading to potential performance bottlenecks.
 
-    * To improve performance, consider caching the results of API calls to the 3rd party provider. This can reduce the number of external requests and speed up response times. Additionally, optimizing api queries  can help improve performance. For example, in the `getPopulationComparison` function, we could implement a caching mechanism using Redis to store the population data for a short period. This would reduce the number of calls to the external API and improve the response time for frequent requests. 
+     * To improve performance, consider caching the results of API calls to the 3rd party provider. This can reduce the number of external requests and speed up response times. Additionally, optimizing api queries  can help improve performance. For example, in the `getPopulationComparison` function, we could implement a caching mechanism using Redis to store the population data for a short period. This would reduce the number of calls to the external API and improve the response time for frequent requests. 
 
-    
+   * Suppose we expect this API to be hit 1000s of times a second.  How can we handle the load?
+     * To handle high load, consider implementing load balancing, horizontal scaling, and using a distributed caching system like Redis. Additionally, optimizing the code and API requests can help improve performance under high load. Using a cloud provider with auto-scaling capabilities can also help manage the load effectively.
 
-  * Suppose we expect this API to be hit 1000s of times a second.  How can we handle the load?
-    * To handle high load, consider implementing load balancing, horizontal scaling, and using a distributed caching system like Redis. Additionally, optimizing the code and API requests can help improve performance under high load. Using a cloud provider with auto-scaling capabilities can also help manage the load effectively.
+   * What if the 3rd party provider is not available?  How resilient is our API?
+     * To improve resilience, implement a fallback mechanism that returns cached data or a default response when the 3rd party provider is unavailable. Additionally, consider using a circuit breaker pattern to prevent cascading failures. This can be achieved by using libraries like `opossum` in Node.js.
 
-   
-  * What if the 3rd party provider is not available?  How resilient is our API?
-    * To improve resilience, implement a fallback mechanism that returns cached data or a default response when the 3rd party provider is unavailable. Additionally, consider using a circuit breaker pattern to prevent cascading failures. This can be achieved by using libraries like `opossum` in Node.js.
+   * What if the requirement for the new endpoint was to also allow the consumer to compare populations for any given date.  How would you modify your implementation?
+     * Modify the `getPopulationComparison` function to accept an optional `date` parameter. If the `date` parameter is provided, use it to fetch population data for the specified date. If not, use the current date. This can be done by adding an additional query parameter to the endpoint and updating the logic to handle this parameter.
 
+   * What if we have a database of users and we wanted to make our API smarter by defaulting comparisons to always include the population of the current user's country.  How could we accomplish this?
+     * Implement user authentication and store user information in a database. Modify the `getPopulationComparison` function to include the current user's country in the comparison if the user is authenticated. This can be achieved by using JWT tokens for authentication and querying the user's country from the database.
 
-  * What if the requirement for the new endpoint was to also allow the consumer to compare populations for any given date.  How would you modify your implementation?
-    * Modify the `getPopulationComparison` function to accept an optional `date` parameter. If the `date` parameter is provided, use it to fetch population data for the specified date. If not, use the current date. This can be done by adding an additional query parameter to the endpoint and updating the logic to handle this parameter.
-
-   
-
-  * What if we have a database of users and we wanted to make our API smarter by defaulting comparisons to always include the population of the current user's country.  How could we accomplish this?
-    * Implement user authentication and store user information in a database. Modify the `getPopulationComparison` function to include the current user's country in the comparison if the user is authenticated. This can be achieved by using JWT tokens for authentication and querying the user's country from the database.
-
-    
-
-  * What if we wanted to keep a tally of the most frequently requested countries and have this be available to consumers.  How could we accomplish this?
-    * Implement a logging mechanism to track the frequency of country requests. Store this data in a database and create an endpoint that returns the most frequently requested countries. This can be done by incrementing a counter in the database each time a country is requested and querying the top requested countries for the new endpoint.
-
-   
+   * What if we wanted to keep a tally of the most frequently requested countries and have this be available to consumers.  How could we accomplish this?
+     * Implement a logging mechanism to track the frequency of country requests. Store this data in a database and create an endpoint that returns the most frequently requested countries. This can be done by incrementing a counter in the database each time a country is requested and querying the top requested countries for the new endpoint.
 
 2. Dockerize the API
 
+For the implementation of the bonus scenarios, please check this GitHub repo: [https://github.com/palgunatm66/CountryComparisonUsingexpressandRedis](https://github.com/palgunatm66/CountryComparisonUsingexpressandRedis)
 
 ## Country Comparison API
 
