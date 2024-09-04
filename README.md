@@ -21,8 +21,8 @@ Our current stack is primarily built in Node.js, Golang, and .NET.  Since this s
 5. Set your NODE_ENV to `dev`
 6. Run `npm start` to start the server
 7. Alternatively, you can use Docker to run the application:
-   - Pull the Docker image: `docker pull palgunatm66/population-comparision:1.0`
-   - Run the Docker container: `docker run -p 3000:3000 palgunatm66/population-comparision:1.0`
+   - Pull the Docker image: `docker pull palgunatm66/population-comparision:1.1`
+   - Run the Docker container: `docker run -p 3000:3000 palgunatm66/population-comparision:1.1`
 
 ### Requirements
 
@@ -94,10 +94,10 @@ The Country Comparison API provides endpoints to retrieve and compare population
 You can run the Country Comparison API using Docker. Follow the steps below to get started:
 
 1. **Pull the Docker Image:**
-   docker pull palgunatm66/population-comparision:1.0
+   docker pull palgunatm66/population-comparision:1.1
 
 2. **Run the Docker Container:**
-   docker run -p 3000:3000 palgunatm66/population-comparision:1.0
+   docker run -p 3000:3000 palgunatm66/population-comparision:1.1
 
 
 ### Endpoints
