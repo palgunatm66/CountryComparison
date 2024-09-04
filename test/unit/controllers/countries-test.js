@@ -36,13 +36,13 @@ describe('countries endpoint tests', () => {
         });
     });
 
-    it('should return empty array if no countries found', function handleNoCountriesFound(done) {
+    it('should return 404 if no countries found', function handleNoCountriesFound(done) {
       sandbox.stub(countryHelper, 'getCountries').returns([]);
 
       request(app)
         .get(`${endpointUrl}`)
         .set('accept', 'application/json')
-        .expect(200, [])
+        .expect(404)
         .end((err) => {
           if (err) {
             return done(err);
@@ -142,6 +142,19 @@ describe('countries endpoint tests', () => {
         });
     });
 
+    it('should return 400 if sortOrder parameter is invalid', function handleInvalidSortOrder(done) {
+      request(app)
+        .get(`${endpointUrl}/Brazil,Argentina/invalidSortOrder`)
+        .set('accept', 'application/json')
+        .expect(400)
+        .end((err) => {
+          if (err) {
+            return done(err);
+          }
+          return done();
+        });
+    });
+
     it('should return 500 if error getting population data', function handleErrorGettingPopulationData(done) {
       const error = new Error('fake error');
       sandbox.stub(countryHelper, 'getPopulation').throws(error);
@@ -149,6 +162,21 @@ describe('countries endpoint tests', () => {
         .get(`${endpointUrl}/Brazil,Argentina`)
         .set('accept', 'application/json')
         .expect(500)
+        .end((err) => {
+          if (err) {
+            return done(err);
+          }
+          return done();
+        });
+    });
+
+    it('should return 503 if external API is unavailable', function handleExternalAPIUnavailable(done) {
+      const error = new Error('Network Error');
+      sandbox.stub(countryHelper, 'getPopulation').throws(error);
+      request(app)
+        .get(`${endpointUrl}/Brazil,Argentina`)
+        .set('accept', 'application/json')
+        .expect(503)
         .end((err) => {
           if (err) {
             return done(err);

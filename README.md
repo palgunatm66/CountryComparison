@@ -48,50 +48,30 @@ Zip your solution, upload it somewhere, and send us a link to the zipped file.
 
     * To improve performance, consider caching the results of API calls to the 3rd party provider. This can reduce the number of external requests and speed up response times. Additionally, optimizing api queries  can help improve performance. For example, in the `getPopulationComparison` function, we could implement a caching mechanism using Redis to store the population data for a short period. This would reduce the number of calls to the external API and improve the response time for frequent requests. 
 
-    ```javascript:src/controllers/countries/countries.controller.js
-    startLine: 15
-    endLine: 43
-    ```
+    
 
   * Suppose we expect this API to be hit 1000s of times a second.  How can we handle the load?
     * To handle high load, consider implementing load balancing, horizontal scaling, and using a distributed caching system like Redis. Additionally, optimizing the code and API requests can help improve performance under high load. Using a cloud provider with auto-scaling capabilities can also help manage the load effectively.
 
-    ```javascript:src/server.js
-    startLine: 1
-    endLine: 61
-    ```
-
+   
   * What if the 3rd party provider is not available?  How resilient is our API?
     * To improve resilience, implement a fallback mechanism that returns cached data or a default response when the 3rd party provider is unavailable. Additionally, consider using a circuit breaker pattern to prevent cascading failures. This can be achieved by using libraries like `opossum` in Node.js.
 
-    ```javascript:src/lib/country-helper.js
-    startLine: 1
-    endLine: 22
-    ```
 
   * What if the requirement for the new endpoint was to also allow the consumer to compare populations for any given date.  How would you modify your implementation?
     * Modify the `getPopulationComparison` function to accept an optional `date` parameter. If the `date` parameter is provided, use it to fetch population data for the specified date. If not, use the current date. This can be done by adding an additional query parameter to the endpoint and updating the logic to handle this parameter.
 
-    ```javascript:src/controllers/countries/countries.controller.js
-    startLine: 15
-    endLine: 43
-    ```
+   
 
   * What if we have a database of users and we wanted to make our API smarter by defaulting comparisons to always include the population of the current user's country.  How could we accomplish this?
     * Implement user authentication and store user information in a database. Modify the `getPopulationComparison` function to include the current user's country in the comparison if the user is authenticated. This can be achieved by using JWT tokens for authentication and querying the user's country from the database.
 
-    ```javascript:src/controllers/countries/index.js
-    startLine: 1
-    endLine: 93
-    ```
+    
 
   * What if we wanted to keep a tally of the most frequently requested countries and have this be available to consumers.  How could we accomplish this?
     * Implement a logging mechanism to track the frequency of country requests. Store this data in a database and create an endpoint that returns the most frequently requested countries. This can be done by incrementing a counter in the database each time a country is requested and querying the top requested countries for the new endpoint.
 
-    ```javascript:test/unit/controllers/countries-test.js
-    startLine: 1
-    endLine: 160
-    ```
+   
 
 2. Dockerize the API
 
@@ -151,7 +131,92 @@ You can run the Country Comparison API using Docker. Follow the steps below to g
   ```sh
   curl -i http://localhost:3000/api/v1/population-comparison/Brazil,Argentina/desc
   ```
+### Error Handling
 
+The API provides detailed error responses to help consumers understand what went wrong. Below are the possible error responses for each endpoint:
+
+#### Get List of Countries
+
+- **URL:** `/api/v1/countries`
+- **Method:** `GET`
+
+**Error Responses:**
+
+- **404 Not Found**
+  - **Description:** No countries found.
+  - **Example:**
+    ```json
+    {
+      "code": "NotFound",
+      "message": "No countries found."
+    }
+    ```
+
+- **500 Internal Server Error**
+  - **Description:** Server error retrieving countries.
+  - **Example:**
+    ```json
+    {
+      "code": "InternalServerError",
+      "message": "Server error retrieving countries."
+    }
+    ```
+
+#### Get Population Comparison
+
+- **URL:** `/api/v1/population-comparison/:countries/:sortOrder?`
+- **Method:** `GET`
+
+**Error Responses:**
+
+- **400 Bad Request**
+  - **Description:** Countries parameter is required.
+  - **Example:**
+    ```json
+    {
+      "code": "BadRequest",
+      "message": "Countries parameter is required."
+    }
+    ```
+
+  - **Description:** Invalid sortOrder parameter. Use "asc" or "desc".
+  - **Example:**
+    ```json
+    {
+      "code": "BadRequest",
+      "message": "Invalid sortOrder parameter. Use \"asc\" or \"desc\"."
+    }
+    ```
+
+- **404 Not Found**
+  - **Description:** Population data not found.
+  - **Example:**
+    ```json
+    {
+      "code": "NotFound",
+      "message": "Population data not found."
+    }
+    ```
+
+- **500 Internal Server Error**
+  - **Description:** Server error retrieving population data.
+  - **Example:**
+    ```json
+    {
+      "code": "InternalServerError",
+      "message": "Server error retrieving population data."
+    }
+    ```
+
+- **503 Service Unavailable**
+  - **Description:** External API is unavailable.
+  - **Example:**
+    ```json
+    {
+      "code": "ServiceUnavailable",
+      "message": "External API is unavailable."
+    }
+    ```
 ### Notes
 
 - Ensure your `NODE_ENV` is set to `production` when running the Docker container.

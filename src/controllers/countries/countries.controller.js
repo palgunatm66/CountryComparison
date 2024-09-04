@@ -6,9 +6,16 @@ const countryHelper = require('../../lib/country-helper');
 exports.getCountries = async function getCountries(req, res) {
   try {
     const countries = await countryHelper.getCountries();
+    if (!countries || countries.length === 0) {
+      return res.send(new errors.NotFoundError('No countries found.'));
+    }
     res.json(countries);
   } catch (err) {
-    res.send(new errors.InternalServerError(err, 'Server error retrieving countries.'));
+    if (err.response && err.response.status === 404) {
+      res.send(new errors.NotFoundError('Countries data not found.'));
+    } else {
+      res.send(new errors.InternalServerError(err, 'Server error retrieving countries.'));
+    }
   }
 };
 
@@ -22,12 +29,19 @@ exports.getPopulationComparison = async function getPopulationComparison(req, re
     }
 
     const countryList = countries.split(',');
+    if (countryList.length === 0) {
+      return res.send(new errors.BadRequestError('At least one country must be specified.'));
+    }
+
     const populationData = await Promise.all(countryList.map(async (country) => {
       const population = await countryHelper.getPopulation(country, date);
       return { country, population };
     }));
 
     if (sortOrder) {
+      if (!['asc', 'desc'].includes(sortOrder)) {
+        return res.send(new errors.BadRequestError('Invalid sortOrder parameter. Use "asc" or "desc".'));
+      }
       populationData.sort((countryA, countryB) =>
         sortOrder === 'asc' ?
           countryA.population - countryB.population :
@@ -36,9 +50,13 @@ exports.getPopulationComparison = async function getPopulationComparison(req, re
     }
 
     res.json(populationData);
-    return res; // Ensure the function returns a value
   } catch (err) {
-    res.send(new errors.InternalServerError(err, 'Server error retrieving population data.'));
-    return res; // Ensure the function returns a value
+    if (err.response && err.response.status === 404) {
+      res.send(new errors.NotFoundError('Population data not found.'));
+    } else if (err.message.includes('Network Error')) {
+      res.send(new errors.ServiceUnavailableError('External API is unavailable.'));
+    } else {
+      res.send(new errors.InternalServerError(err, 'Server error retrieving population data.'));
+    }
   }
 };

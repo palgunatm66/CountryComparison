@@ -21,10 +21,7 @@ let app = restify.createServer({
 
 
 app.use(cors());
-app.opts('*', cors(), (req, res, next) => {
-  res.send(200);
-  next();
-});
+
 
 app.acceptable = config.accept;
 app.use(plugins.acceptParser(app.acceptable));
